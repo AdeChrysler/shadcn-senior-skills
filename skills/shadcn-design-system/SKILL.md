@@ -17,10 +17,10 @@ This skill encodes a senior workflow for UI work with shadcn-style kits (CLI cop
 When this skill is invoked for UI work:
 
 1. Inspect existing `globals.css` / theme tokens and `components/ui` before editing screens.
-2. Refuse “panic customization” as step one (random `bg-blue-500`, `rounded-xl`, padding hacks on primitives).
+2. Refuse "panic customization" as step one (random `bg-blue-500`, `rounded-xl`, padding hacks on primitives).
 3. Follow the **decision ladder** below for every visual change.
 
-Do not invent a second design language beside the project’s tokens.
+Do not invent a second design language beside the project's tokens.
 
 ## Core thesis
 
@@ -29,7 +29,7 @@ Do not invent a second design language beside the project’s tokens.
 | Package owns the source | **You** own the source (`components/ui`) |
 | Customize mostly from the outside | Customize from the **inside** |
 | Theme API wraps black-box internals | Theme tokens + your variants *are* the system |
-| “Use the library” | “Build **your** design system on this foundation” |
+| "Use the library" | "Build **your** design system on this foundation" |
 
 If the site still looks like every other stock shadcn demo, the foundation was never claimed.
 
@@ -59,7 +59,7 @@ Stop at the highest step that works.
 
 ### Where truth lives
 
-- Prefer semantic CSS variables in `globals.css` (or the project’s theme entry): `--background`, `--foreground`, `--card`, `--primary`, `--primary-foreground`, `--muted`, `--accent`, `--border`, `--destructive`, chart/sidebar tokens, radius, etc.
+- Prefer semantic CSS variables in `globals.css` (or the project's theme entry): `--background`, `--foreground`, `--card`, `--primary`, `--primary-foreground`, `--muted`, `--accent`, `--border`, `--destructive`, chart/sidebar tokens, radius, etc.
 - Primitives should consume tokens (`bg-primary`, `text-muted-foreground`), not raw palette utilities (`bg-blue-500`).
 - Changing a token should restyle the product **without** touching JSX.
 
@@ -75,10 +75,10 @@ Reason in L/C/H when adjusting brand color. A picker such as [oklch.com](https:/
 
 ### Semantic names only
 
-| Do | Don’t |
+| Do | Don't |
 | --- | --- |
 | `--primary`, `--muted`, `--destructive` | `--blue`, `--gray-2`, `--brandPurple` as the *consumed* API |
-| Ask: “What is the primary action color?” | Ask: “I need a blue button” |
+| Ask: "What is the primary action color?" | Ask: "I need a blue button" |
 | Rebrand by changing token **values** | Rebrand by renaming tokens and grepping components |
 
 Literal appearance names force cascading renames on rebrand. Role names do not.
@@ -86,14 +86,14 @@ Literal appearance names force cascading renames on rebrand. Role names do not.
 **Anti-patterns to reject in product UI code:**
 
 - `bg-blue-500`, `text-sky-600`, `border-indigo-200` as the primary styling method
-- Editing one primitive’s base styles with a one-off palette to “make this screen pretty”
+- Editing one primitive's base styles with a one-off palette to "make this screen pretty"
 - Mixing radius languages (theme `radius: none` but random `rounded-xl` on controls)
 
 ## Theme tooling
 
 When establishing or resetting a theme:
 
-1. Prefer the project’s **Create / preset** flow (e.g. shadcn Create) for a coherent bundle: style, base color, accent, charts, fonts, icons, radius.
+1. Prefer the project's **Create / preset** flow (e.g. shadcn Create) for a coherent bundle: style, base color, accent, charts, fonts, icons, radius.
 2. Hand-edit variables when you need precise control — still keep **semantic** names and OKLCH values.
 3. Expect a theme CLI/preset update to rewrite **theme CSS**, not every component file. Components that read tokens restyle automatically.
 4. Watch contrast when inventing tokens by hand; presets often encode safer pairings.
@@ -110,16 +110,16 @@ If the repo already standardized on Radix (or another base), do not churn bases 
 
 ## Extending components
 
-### Add variants; don’t trash the foundation
+### Add variants; don't trash the foundation
 
 - Open the owned primitive (e.g. `components/ui/button.tsx`).
 - Keep shared base styles (focus, sizing rhythm, radius from tokens, motion that matches the system).
 - Add new **variants** that compose on that base (example intent: `premium` = gradient using `from-primary to-accent`, still using semantic tokens).
 - Do **not** replace the base with a one-screen hack.
 
-### Don’t fight the design language
+### Don't fight the design language
 
-If the theme chose square controls (`radius` none), do not sprinkle large radii on a single button “because it looks nicer.” Change the **token** if the language should change; otherwise obey it.
+If the theme chose square controls (`radius` none), do not sprinkle large radii on a single button "because it looks nicer." Change the **token** if the language should change; otherwise obey it.
 
 Same for type scale, border strategy, and density: one language per product.
 
@@ -144,7 +144,7 @@ When reviewing shadcn/UI structure, use a markdown table:
 | --- | --- | --- | --- |
 | `className="bg-blue-500"` on Button | `variant="default"` + `--primary` token | Tokens | Semantic role, not a literal color |
 | Four pasted Card trees | `<MetricCard />` wrapper | Wrapper | Product pattern, not a page one-off |
-| Edited `button.tsx` base to `rounded-xl` | Theme radius token or a named variant | Tokens / Variant | Don’t fight or silently fork the language |
+| Edited `button.tsx` base to `rounded-xl` | Theme radius token or a named variant | Tokens / Variant | Don't fight or silently fork the language |
 | `className` gradient on every CTA | `variant="premium"` via CVA | Variant | Reusable style belongs inside the primitive |
 
 ## Anti-patterns (fail the review)
